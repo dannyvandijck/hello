@@ -1,17 +1,15 @@
 node {
+    def app
+	def mvnHome
+	def registry = "dannyvandijck/docker-test-repository"
+	def dockerImageName =   registry + ":${env.BUILD_NUMBER}"
 
-    def mvnHome
-    def registry = "dannyvandijck/docker-test-repository"
-    def registryCredential = 'dockerhub'
-	def dockerImage
-	def dockerImageName  
-//	def env.version  
+    stage('Clone repository') {
+        /* Let's make sure we have the repository cloned to our workspace */
+        checkout scm
+    }
 
-        stage('Checkout code from GitHub') {
-            git url: 'https://github.com/dannyvandijck/hello.git', credentialsId: 'dannyvandijck', branch: 'master'
-        }
-
-        stage('Build') {
+	stage('Build code') {
             // Get the Maven tool.
             // ** NOTE: This 'M3' Maven tool must be configured
             // **       in the global configuration.           
@@ -20,44 +18,34 @@ node {
             def pom = readMavenPom file:'pom.xml'
             print pom.version
             env.version = pom.version
-        }
-
-		stage('Results') {
+    }
+    
+    stage('Test code') {
 			junit '**/target/surefire-reports/TEST-*.xml'
 			archive 'target/*.jar'
-		}	
-		
-	//	stage('Build Docker Image ') {
-		//	def dockerImageName =   registry + ":$BUILD_NUMBER"     
-          //  dockerImage = docker.build(dockerImageName)
-          // dockerImage = buildImage name:dockerImageName
-    //      dir ('hello') {
-    //            dockerImage = docker.build "localhost:5000/hello:${env.version}"
-    //        }
-    //    }
+	}
         
-    //    stage('Push Docker Image to DockerHub') {       
-    //          docker.withRegistry( '', registryCredential ) {				
-    //            dockerImage.push()            
-    //      }
-    //    }
-        
-        
-        stage('Docker Build, Push'){
-		    docker.withRegistry( '', registryCredential ) {	
-			  dockerImageName =   registry + ":$BUILD_NUMBER"     
-          	  dockerImage = docker.build(dockerImageName)
-		      sh "docker build -t ${dockerImageName} ."
-		      sh "docker push ${registry}"
-		    }
-		}
+    stage('Build image') {
+        /* This builds the actual image; synonymous to
+         * docker build on the command line */
 
-        stage('Remove Unused local docker image') {         
-           // bat "docker rmi $registry:$BUILD_NUMBER"       
-            bat "docker rmi ${dockerImageName}"          
+        app = docker.build(${dockerImageName})
+    }
+
+    stage('Test image') {
+        app.inside {
+            sh 'echo "Tests passed"'
         }
-     
+    }
 
-    
-
+    stage('Push image') {
+        /* Finally, we'll push the image with two tags:
+         * First, the incremental build number from Jenkins
+         * Second, the 'latest' tag.
+         * Pushing multiple tags is cheap, as all the layers are reused. */
+        docker.withRegistry('', 'dockerhub') {
+            app.push("${env.BUILD_NUMBER}")
+            app.push("latest")
+        }
+    }
 }
