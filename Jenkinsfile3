@@ -1,0 +1,63 @@
+node {
+
+    def mvnHome
+    def registry = "dannyvandijck/docker-test-repository"
+    def registryCredential = 'dockerhub'
+	def dockerImage
+	def dockerImageName  
+//	def env.version  
+
+        stage('Checkout code from GitHub') {
+            git url: 'https://github.com/dannyvandijck/hello.git', credentialsId: 'dannyvandijck', branch: 'master'
+        }
+
+        stage('Build') {
+            // Get the Maven tool.
+            // ** NOTE: This 'M3' Maven tool must be configured
+            // **       in the global configuration.           
+            mvnHome = tool 'M3'
+			bat(/"${mvnHome}\bin\mvn" -Dmaven.test.failure.ignore clean package/)
+            def pom = readMavenPom file:'pom.xml'
+            print pom.version
+            env.version = pom.version
+        }
+
+		stage('Results') {
+			junit '**/target/surefire-reports/TEST-*.xml'
+			archive 'target/*.jar'
+		}	
+		
+	//	stage('Build Docker Image ') {
+		//	def dockerImageName =   registry + ":$BUILD_NUMBER"     
+          //  dockerImage = docker.build(dockerImageName)
+          // dockerImage = buildImage name:dockerImageName
+    //      dir ('hello') {
+    //            dockerImage = docker.build "localhost:5000/hello:${env.version}"
+    //        }
+    //    }
+        
+    //    stage('Push Docker Image to DockerHub') {       
+    //          docker.withRegistry( '', registryCredential ) {				
+    //            dockerImage.push()            
+    //      }
+    //    }
+        
+        
+        stage('Docker Build, Push'){
+		    docker.withRegistry( '', registryCredential ) {	
+			  dockerImageName =   registry + ":$BUILD_NUMBER"     
+          	  dockerImage = docker.build(dockerImageName)
+		      sh "docker build -t ${dockerImageName} ."
+		      sh "docker push ${registry}"
+		    }
+		}
+
+        stage('Remove Unused local docker image') {         
+           // bat "docker rmi $registry:$BUILD_NUMBER"       
+            bat "docker rmi ${dockerImageName}"          
+        }
+     
+
+    
+
+}
