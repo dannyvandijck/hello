@@ -1,0 +1,19 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: hello-service-deployment
+  namespace: development
+  labels:
+    app: hello-service-app
+spec:
+  replicas: 4
+  template:
+    metadata:
+      labels:
+        apps: hello-service
+    spec:
+      containers:
+      - name: hello-service
+        image: essers.com/test/hello-service:development
+        ports:
+        - containerPort: 8098
