@@ -52,7 +52,7 @@ node {
     
    
     stage('Deploy Application') {
-    
+    sh("echo $home")
     sh("kubectl version")
     /*
        switch (namespace) {
