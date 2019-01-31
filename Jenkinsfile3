@@ -1,7 +1,7 @@
 node {
     def app
 	def mvnHome
-	def registry = "dannyvandijck/docker-test-repository"
+	def registry = "dannyvandijck/docker-test-repo-pub"
 	def dockerImageName =   registry + ":${env.BUILD_NUMBER}"
 	def namespace = 'development'
 
@@ -66,7 +66,7 @@ node {
            		   sh("kubectl --namespace=${namespace} apply -f k8s/development/deployment.yaml")
                    sh("kubectl --namespace=${namespace} apply -f k8s/development/service.yaml")
            			//Grab the external Ip address of the service
-                   sh("echo http://`kubectl --namespace=${namespace} get service/${feSvcName} --output=json | jq -r '.status.loadBalancer.ingress[0].ip'` > ${feSvcName}")
+                   // sh("echo http://`kubectl --namespace=${namespace} get service/${feSvcName} --output=json | jq -r '.status.loadBalancer.ingress[0].ip'` > ${feSvcName}")
                    break
            
         	  //Roll out to Production Environment
@@ -79,7 +79,7 @@ node {
                    sh("kubectl --namespace=${namespace} apply -f k8s/production/deployment.yaml")
                    sh("kubectl --namespace=${namespace} apply -f k8s/production/service.yaml")
            		   //Grab the external Ip address of the service
-                   sh("echo http://`kubectl --namespace=${namespace} get service/${feSvcName} --output=json | jq -r '.status.loadBalancer.ingress[0].ip'` > ${feSvcName}")
+                   // sh("echo http://`kubectl --namespace=${namespace} get service/${feSvcName} --output=json | jq -r '.status.loadBalancer.ingress[0].ip'` > ${feSvcName}")
                    break
        
               default:
@@ -87,7 +87,7 @@ node {
                    sh("sed -i.bak 's#$registry#${dockerImageName}#' ./k8s/development/*.yaml")
                    sh("kubectl --namespace=${namespace} apply -f k8s/development/deployment.yaml")
                    sh("kubectl --namespace=${namespace} apply -f k8s/development/service.yaml")
-                   sh("echo http://`kubectl --namespace=${namespace} get service/${feSvcName} --output=json | jq -r '.status.loadBalancer.ingress[0].ip'` > ${feSvcName}")
+                   // sh("echo http://`kubectl --namespace=${namespace} get service/${feSvcName} --output=json | jq -r '.status.loadBalancer.ingress[0].ip'` > ${feSvcName}")
                    break
     	}
     	
