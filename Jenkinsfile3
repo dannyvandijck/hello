@@ -60,6 +60,7 @@ node {
               case "development":
                    // Create namespace if it doesn't exist
                    sh("kubectl get ns ${namespace} || kubectl create ns ${namespace}")
+                   sh("kubectl get pods --namespace=${namespace}")
            		   //Update the imagetag to the latest version
                    sh("sed -i.bak 's#$registry#${dockerImageName}#' ./k8s/development/*.yaml")
                    //Create or update resources
