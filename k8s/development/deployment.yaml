@@ -14,6 +14,6 @@ spec:
     spec:
       containers:
       - name: hello-service
-        image: essers.com/test/hello-service:development
+        image: dannyvandijck/docker-test-repo-pub
         ports:
         - containerPort: 8098
