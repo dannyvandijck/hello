@@ -2,7 +2,10 @@ node {
     def app
 	def mvnHome
 	def registry = "dannyvandijck/docker-test-repo-pub"
-	def dockerImageName =   registry + ":${env.BUILD_NUMBER}"
+	def buildNumber = ${env.BUILD_NUMBER}
+	def previousBuildNumber = buildNumber.toInteger() - 1
+	def dockerImageName =   registry + ":${buildNumber}"
+	def previousDockerImageName =   registry + ":${previousBuildNumber}"
 	def namespace = 'development'
 
     stage('Clone repository') {
@@ -61,7 +64,7 @@ node {
                    // Create namespace if it doesn't exist
                    sh("kubectl get ns ${namespace} || kubectl create ns ${namespace}")                   
            		   //Update the imagetag to the latest version
-                   sh("sed -i.bak 's#$registry#${dockerImageName}#' ./k8s/development/*.yaml")
+                   sh("sed -i.bak 's#${previousDockerImageName}#${dockerImageName}#' ./k8s/development/*.yaml")
                    sh("kubectl get pods --namespace=${namespace}")
                    //Create or update resources
            		   sh("kubectl --namespace=${namespace} apply -f k8s/development/deployment.yaml")
@@ -73,7 +76,7 @@ node {
                    // Create namespace if it doesn't exist
                    sh("kubectl get ns ${namespace} || kubectl create ns ${namespace}")
            		   //Update the imagetag to the latest version
-                   sh("sed -i.bak 's#$registry#${dockerImageName}#' ./k8s/production/*.yaml")
+                   sh("sed -i.bak 's#${previousDockerImageName}#${dockerImageName}#' ./k8s/production/*.yaml")
            		   //Create or update resources
                    sh("kubectl --namespace=${namespace} apply -f k8s/production/deployment.yaml")
                    sh("kubectl --namespace=${namespace} apply -f k8s/production/service.yaml")
@@ -81,7 +84,7 @@ node {
        
               default:
                    sh("kubectl get ns ${namespace} || kubectl create ns ${namespace}")
-                   sh("sed -i.bak 's#$registry#${dockerImageName}#' ./k8s/development/*.yaml")
+                   sh("sed -i.bak 's#${previousDockerImageName}#${dockerImageName}#' ./k8s/development/*.yaml")
                    sh("kubectl --namespace=${namespace} apply -f k8s/development/deployment.yaml")
                    sh("kubectl --namespace=${namespace} apply -f k8s/development/service.yaml")
                 break
