@@ -16,4 +16,4 @@ spec:
       - name: hello-service
         image: dannyvandijck/docker-test-repo-pub:1
         ports:
-        - containerPort: 8099
+        - containerPort: 8098
