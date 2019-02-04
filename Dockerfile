@@ -2,4 +2,4 @@ FROM openjdk
 MAINTAINER Danny Van Dijck <danny.vandijck@hotmail.com>
 ADD target/hello.jar hello.jar
 ENTRYPOINT ["java", "-jar", "/hello.jar"]
-EXPOSE 8099:8099
+EXPOSE 8080
