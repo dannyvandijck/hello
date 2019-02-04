@@ -52,8 +52,6 @@ node {
     
    
     stage('Deploy Application') {
-    
-    sh("kubectl version")
    
        switch (namespace) {
               //Roll out to Dev Environment
