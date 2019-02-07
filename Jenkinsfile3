@@ -63,7 +63,7 @@ node {
                    sh("kubectl get pods --namespace=${namespace}")
                    //Create or update resources
            		   sh("kubectl --namespace=${namespace} apply -f k8s/development/deployment.yaml")
-                   sh("kubectl --namespace=${namespace} apply -f k8s/development/service.yaml")
+                   // sh("kubectl --namespace=${namespace} apply -f k8s/development/service.yaml")
            		break
            
         	  //Roll out to Production Environment
@@ -74,14 +74,14 @@ node {
                    sh("sed -i.bak 's#$registry#${dockerImageName}#' ./k8s/production/*.yaml")
            		   //Create or update resources
                    sh("kubectl --namespace=${namespace} apply -f k8s/production/deployment.yaml")
-                   sh("kubectl --namespace=${namespace} apply -f k8s/production/service.yaml")
+                   // sh("kubectl --namespace=${namespace} apply -f k8s/production/service.yaml")
            		break
        
               default:
                    sh("kubectl get ns ${namespace} || kubectl create ns ${namespace}")
                    sh("sed -i.bak 's#$registry#${dockerImageName}#' ./k8s/development/*.yaml")
                    sh("kubectl --namespace=${namespace} apply -f k8s/development/deployment.yaml")
-                   sh("kubectl --namespace=${namespace} apply -f k8s/development/service.yaml")
+                   // sh("kubectl --namespace=${namespace} apply -f k8s/development/service.yaml")
                break
     	}
     	
