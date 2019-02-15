@@ -9,7 +9,9 @@ spec:
       port: 8080
       # target port of the pod you want to reach. (=loadBalancer)
       #targetPort: 8080
-      nodePort: 8080
+      # specify a node port. The range of valid ports is 30000-32767
+      # nodePort: 30000
+      nodePort: 30001
 # type: LoadBalancer  
   type: NodePort    
   selector:
