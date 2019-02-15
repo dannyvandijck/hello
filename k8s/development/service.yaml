@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: hello-as-a-service
+  namespace: development
+spec:
+  ports:
+    - name: http
+      port: 8080
+      # target port of the pod you want to reach. (=loadBalancer)
+      #targetPort: 8080
+      nodePort: 8080
+# type: LoadBalancer  
+  type: NodePort    
+  selector:
+    apps: hello-service
