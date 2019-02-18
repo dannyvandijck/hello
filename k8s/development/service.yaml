@@ -6,7 +6,7 @@ metadata:
 spec:
   ports:
     - name: http
-      port: 8080
+      port: 8081
       # target port of the pod you want to reach. (=loadBalancer)
       #targetPort: 8080
       # specify a node port. The range of valid ports is 30000-32767
