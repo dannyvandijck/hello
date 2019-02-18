@@ -16,4 +16,11 @@ public class HelloController {
 		return "HELLO WORLD";
 	}
 
+	@GetMapping("/hello2")
+	@ResponseStatus(HttpStatus.ACCEPTED)
+	@ResponseBody()
+	public String sayHello2() {
+		return "HELLO WORLD 2";
+	}
+
 }
