@@ -9,11 +9,18 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class HelloController {
 
-	@GetMapping("/hello")
+	@GetMapping("/")
 	@ResponseStatus(HttpStatus.ACCEPTED)
 	@ResponseBody()
 	public String sayHello() {
-		return "HELLO WORLD";
+		return "HELLO WORLD from scratch";
+	}
+
+	@GetMapping("/hello")
+	@ResponseStatus(HttpStatus.ACCEPTED)
+	@ResponseBody()
+	public String sayHello2() {
+		return "HELLO WORLD AGAIN !!! ";
 	}
 
 }
