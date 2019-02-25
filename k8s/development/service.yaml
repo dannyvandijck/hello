@@ -27,7 +27,7 @@ metadata:
     kubernetes.io/ingress.class: "nginx"
 spec:
   rules:
-    - host: http://10.200.119.137
+    - host: 10.200.119.137
       http:
         paths:
           - backend:
