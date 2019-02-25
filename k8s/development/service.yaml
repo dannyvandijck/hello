@@ -32,11 +32,8 @@ spec:
         paths:
           - backend:
               serviceName: hello-as-a-service
-              servicePort: 80
+              servicePort: 8080
             path: /helloworldtest/
-#          - backend:
-#              serviceName: hello-as-a-service
-#              servicePort: 80
-#            path: /helloworldtest/hello2  
+ 
 
     
