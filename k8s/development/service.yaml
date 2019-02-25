@@ -11,7 +11,7 @@ spec:
       targetPort: 8080
       # specify a node port. The range of valid ports is 30000-32767
       # nodePort: 30000
-      # nodePort: 30001
+      nodePort: 30001
 # type: LoadBalancer  
   type: NodePort    
   selector:
