@@ -16,3 +16,27 @@ spec:
   type: NodePort    
   selector:
     apps: hello-service
+    
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: hello-world-ingress	
+  namespace: development
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+spec:
+  rules:
+    - host: http://10.200.119.137
+      http:
+        paths:
+          - backend:
+              serviceName: hello-as-a-service
+              servicePort: 30001
+            path: /helloworldtest/
+#          - backend:
+#              serviceName: hello-as-a-service
+#              servicePort: 30001
+#            path: /helloworldtest/hello2  
+
+    
