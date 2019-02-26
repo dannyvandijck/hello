@@ -24,16 +24,18 @@ metadata:
   name: hello-world-ingress	
   namespace: development
   annotations:
-    kubernetes.io/ingress.class: "nginx"
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
   rules:
     - host: kubedanvan.essers.com
       http:
         paths:
-          - backend:
+          -	path: /helloworldtest/
+            backend:
               serviceName: hello-as-a-service
               servicePort: 80
-            path: /helloworldtest/
+            
  
 
     
