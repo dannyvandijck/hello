@@ -8,11 +8,12 @@ spec:
     - name: http
       port: 1111
       # target port of the pod you want to reach. (=loadBalancer)
-      targetPort: 8080
+      # targetPort: 8080
       # specify a node port. The range of valid ports is 30000-32767
-      # nodePort: 30001
-# type: LoadBalancer
-  type: NodePort      
+      # nodePort: 30000
+      nodePort: 30001
+# type: NodePortLoadBalancer  
+  type: NodePort    
   selector:
     apps: hello-service
     
@@ -32,7 +33,7 @@ spec:
         paths:
           - backend:
               serviceName: hello-as-a-service
-              servicePort: 8080
+              servicePort: 30001
             path: /helloworldtest/
 
 
