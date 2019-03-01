@@ -3,6 +3,7 @@ kind: Deployment
 metadata:
   name: hello-service
   #namespace: development
+  namespace: default
   labels:
     app: hello-service
 spec:
