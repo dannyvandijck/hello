@@ -3,7 +3,8 @@ node {
 	def mvnHome
 	def registry = "dannyvandijck/docker-test-repo-pub"
 	def dockerImageName =   registry + ":${env.BUILD_NUMBER}"
-	def namespace = 'development'
+	/*def namespace = 'development'*/
+	def namespace = 'default'
 
     stage('Clone repository') {
         /* Let's make sure we have the repository cloned to our workspace */
@@ -54,6 +55,7 @@ node {
     stage('Deploy Application') {
    
        switch (namespace) {
+       
               //Roll out to Dev Environment
               case "development":
                    // Create namespace if it doesn't exist
