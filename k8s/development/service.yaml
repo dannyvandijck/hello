@@ -31,8 +31,8 @@ spec:
   rules:
     - host: kubedanvan.essers.com
       http:
-        port: 8080
-        nodePort: 30002
+        port: '8080'
+        nodePort: '30002'
         paths:
           - backend:
               serviceName: hello-as-a-service
