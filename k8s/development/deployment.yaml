@@ -2,8 +2,7 @@ apiVersion: apps/v1beta1
 kind: Deployment
 metadata:
   name: hello-service
-  #namespace: development
-  namespace: default
+  namespace: development
   labels:
     app: hello-service
 spec:

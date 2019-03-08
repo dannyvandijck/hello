@@ -2,8 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: hello-as-a-service
-  #namespace: development
-  namespace: default
+  namespace: development
 spec:
   ports:
     - name: http
@@ -13,7 +12,7 @@ spec:
       # specify a node port. The range of valid ports is 30000-32767
       # nodePort: 30000
       # for the development namespace nodePort: 30001
-      nodePort: 30002
+      nodePort: 30001
 # type: NodePortLoadBalancer  
   type: NodePort    
   selector:
@@ -24,8 +23,7 @@ apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
   name: hello-world-ingress	
-  #namespace: development
-  namespace: default
+  namespace: development
   annotations:
     kubernetes.io/ingress.class: nginx
     nginx.ingress.kubernetes.io/rewrite-target: /
@@ -33,11 +31,12 @@ spec:
   rules:
     - host: kubedanvan.essers.com
       http:
+        port: 8080
+        nodePort: 30002
         paths:
           - backend:
               serviceName: hello-as-a-service
-              # for the development namespace servicePort: 30001
-              servicePort: 30002
+              servicePort: 30001
             path: /helloworldtest/
 
 

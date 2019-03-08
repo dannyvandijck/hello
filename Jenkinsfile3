@@ -3,8 +3,7 @@ node {
 	def mvnHome
 	def registry = "dannyvandijck/docker-test-repo-pub"
 	def dockerImageName =   registry + ":${env.BUILD_NUMBER}"
-	/*def namespace = 'development'*/
-	def namespace = 'default'
+	def namespace = 'development'
 
     stage('Clone repository') {
         /* Let's make sure we have the repository cloned to our workspace */
