@@ -19,7 +19,7 @@ spec:
     apps: hello-service
     
 ---
-apiVersion: voyager.appscode.com/v1beta1
+apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
   name: hello-world-ingress	
@@ -31,8 +31,6 @@ spec:
   rules:
     - host: kubedanvan.essers.com
       http:
-        port: '8080'
-        nodePort: '30002'
         paths:
           - backend:
               serviceName: hello-as-a-service
