@@ -19,7 +19,7 @@ spec:
     apps: hello-service
     
 ---
-apiVersion: extensions/v1beta1
+apiVersion: voyager.appscode.com/v1beta1
 kind: Ingress
 metadata:
   name: hello-world-ingress	
